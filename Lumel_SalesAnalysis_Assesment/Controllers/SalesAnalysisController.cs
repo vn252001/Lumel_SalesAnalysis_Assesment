@@ -142,6 +142,7 @@ namespace Lumel_SalesAnalysis_Assesment.Controllers
 
 
         #region GetRevenueByCategory 
+         [HttpGet("GetRevenueByCategory")]
         public async Task<IActionResult> GetRevenueByCategory(DateOnly saledate)
         {
             var result = await (from o in _context.Orders
