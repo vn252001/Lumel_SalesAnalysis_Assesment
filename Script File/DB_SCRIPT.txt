@@ -1,0 +1,59 @@
+CREATE DATABASE SalesAnalysisDB;
+GO
+
+
+
+
+
+--Creating Customers Table
+CREATE TABLE Customers
+(
+	CustomerId INT IDENTITY(1,1) PRIMARY KEY,
+	CustomerCode VARCHAR(20) UNIQUE NOT NULL
+);
+
+--Product Table
+CREATE TABLE PRODUCTS
+(
+	ProductId INT IDENTITY(1,1) PRIMARY KEY ,
+	ProductCode VARCHAR(20) UNIQUE NOT NULL,
+	ProductName VARCHAR(200),
+	Category VARCHAR(100),
+	UnitPrice DECIMAL(18,2),
+	UnitCost DECIMAL(18,2)
+);
+
+
+
+CREATE TABLE Orders
+(
+	OrderId INT IDENTITY(1,1) PRIMARY KEY,
+	CustomerId INT,
+	Region VARCHAR(100),
+	SaleDate DATE,
+	Discount DECIMAL(18,2),
+	ShippingCost DECIMAL(18,2),
+	PaymentMethod  VARCHAR(50),
+
+	CONSTRAINT FK_Orders_Customers
+	FOREIGN KEY(CustomerId)
+	REFERENCES Customers(CustomerId)
+);
+
+--Order Table 
+CREATE TABLE  OrderItems
+(
+	Id INT IDENTITY(1,1) PRIMARY KEY,
+	OrderId INT,
+	ProductId INT,
+	Quantity int,
+
+	CONSTRAINT FX_OrderItems_Orders
+	FOREIGN KEY(OrderId)
+	REFERENCES Orders(OrderId),
+
+	CONSTRAINT  FX_OrderItems_Products
+	FOREIGN KEY(ProductId)
+	REFERENCES Products(ProductId)
+);
+
