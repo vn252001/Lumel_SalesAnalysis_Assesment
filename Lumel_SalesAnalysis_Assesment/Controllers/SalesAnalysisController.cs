@@ -122,9 +122,9 @@ namespace Lumel_SalesAnalysis_Assesment.Controllers
                 return BadRequest("Start Date cannot be greater than End Date");
 
             }
-            var revenue = await (from o in _context.Orders
-                                 join oi in _context.OrderItems on o.OrderId equals oi.OrderId
-                                 join P in _context.Products on oi.ProductId equals P.ProductId
+            var revenue = await (from o in _context.Orders.AsNoTracking()
+                                 join oi in _context.OrderItems.AsNoTracking() on o.OrderId equals oi.OrderId
+                                 join P in _context.Products.AsNoTracking() on oi.ProductId equals P.ProductId
                                  where o.SaleDate >= startDate && o.SaleDate <= endDate.Value.Date
                                  select new
                                  {
@@ -145,9 +145,9 @@ namespace Lumel_SalesAnalysis_Assesment.Controllers
          [HttpGet("GetRevenueByCategory")]
         public async Task<IActionResult> GetRevenueByCategory(DateOnly saledate)
         {
-            var result = await (from o in _context.Orders
-                                join oi in _context.OrderItems on o.OrderId equals oi.OrderId
-                                join P in _context.Products on oi.ProductId equals P.ProductId
+            var result = await (from o in _context.Orders.AsNoTracking()
+                                join oi in _context.OrderItems.AsNoTracking() on o.OrderId equals oi.OrderId
+                                join P in _context.Products.AsNoTracking() on oi.ProductId equals P.ProductId
                                 where o.SaleDate >= saledate && o.SaleDate < saledate.AddDays(1)
                                 group new { oi, P, o } by P.Category into g
                                 select new
